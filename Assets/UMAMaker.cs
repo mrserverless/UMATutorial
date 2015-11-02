@@ -15,11 +15,23 @@ public class UMAMaker : MonoBehaviour {
 	private UMADnaHumanoid umaDna; 
 	private UMADnaTutorial umaTutorialDna; // optional make your own dna
 	
+	[Range (0.0f,1.0f)]
+	public float bodyMass = 0.5f;
 	
 	private int numberOfSlots = 20; // slots to be added to UMA
 	
 	void Start() {
 		GenerateUMA();	
+	}
+	
+	void Update() {
+		
+		if (bodyMass != umaDna.upperMuscle) {
+			SetBodyMass(bodyMass);
+			umaData.isShapeDirty = true;
+			umaData.Dirty();
+		}
+			
 	}
 	
 	void GenerateUMA () {
@@ -44,7 +56,6 @@ public class UMAMaker : MonoBehaviour {
 		umaData.umaRecipe.AddDna(umaTutorialDna);
 		
 		CreateMale();
-		GenerateDNA();
 		
 		umaDynamicAvatar.animationController = animController;
 		
@@ -70,11 +81,11 @@ public class UMAMaker : MonoBehaviour {
 		mouth.AddOverlay(overlayLibrary.InstantiateOverlay("InnerMouth"));
 		recipe.slotDataList[1] = mouth;
 		
-		SlotData head = slotLibrary.InstantiateSlot("MaleFace", new List<OverlayData> {
+
+		recipe.slotDataList[2] = slotLibrary.InstantiateSlot("MaleFace", new List<OverlayData> {
 			overlayLibrary.InstantiateOverlay("MaleHead02"),
 			overlayLibrary.InstantiateOverlay("MaleEyebrow01", Color.black)
-		});
-		recipe.slotDataList[2] = head;
+		});;
 		
 		SlotData torso = slotLibrary.InstantiateSlot("MaleTorso", new List<OverlayData> {
 			overlayLibrary.InstantiateOverlay("MaleBody02"),
@@ -82,25 +93,18 @@ public class UMAMaker : MonoBehaviour {
 		});
 		recipe.slotDataList[3] = torso;
 		
-		SlotData hands = slotLibrary.InstantiateSlot("MaleHands");
-		hands.AddOverlay(overlayLibrary.InstantiateOverlay("MaleBody02"));
-		recipe.slotDataList[4] = hands;
-		
-		SlotData legs = slotLibrary.InstantiateSlot("MaleLegs", new List<OverlayData>(){
-			overlayLibrary.InstantiateOverlay("MaleBody02"),
-			overlayLibrary.InstantiateOverlay("MaleUnderwear01")
-		});
-		recipe.slotDataList[5] = legs;
-		
-		SlotData feet = slotLibrary.InstantiateSlot("MaleFeet");
-		feet.AddOverlay(overlayLibrary.InstantiateOverlay("MaleBody02"));
-		recipe.slotDataList[6] = feet;
-		
-		
+		recipe.slotDataList[4] = slotLibrary.InstantiateSlot("MaleHands", torso.GetOverlayList());
+		recipe.slotDataList[5] = slotLibrary.InstantiateSlot("MaleLegs", torso.GetOverlayList());		
+		recipe.slotDataList[6] = slotLibrary.InstantiateSlot("MaleFeet", torso.GetOverlayList());
 	}
 	
-	private void GenerateDNA() {
-		umaDna.headSize = 0.5f;
+	private void SetBodyMass(float mass) {
+		umaDna.upperMuscle = mass;
+		umaDna.upperWeight = mass;
+		umaDna.lowerMuscle = mass;
+		umaDna.lowerWeight = mass;
+		umaDna.armWidth = mass;
+		umaDna.forearmWidth = mass;
 	}
 	
 	private SlotData[] MaleSlots() {
