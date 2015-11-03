@@ -28,8 +28,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		Vector3 m_CapsuleCenter;
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
-		
-		public Animator umaAnimator;
+		Animator umaAnimator;
 
 		void Start()
 		{
@@ -42,16 +41,17 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 		}
-		
+
 		void Update() {
-			if (umaAnimator == null && GameObject.Find("MyUMA")) {
-				umaAnimator = GameObject.Find("MyUMA").GetComponent<Animator>();
+			if (umaAnimator == null && transform.Find("MyUMA").GetComponent<Animator>()) {
+				umaAnimator = transform.Find("MyUMA").GetComponent<Animator>();
 				Debug.Log("animator found");
 				m_Animator = umaAnimator;
 				m_Animator.applyRootMotion = false;
 			}
 		}
-
+		
+		
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
 
@@ -98,7 +98,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			{
 				Ray crouchRay = new Ray(m_Rigidbody.position + Vector3.up * m_Capsule.radius * k_Half, Vector3.up);
 				float crouchRayLength = m_CapsuleHeight - m_Capsule.radius * k_Half;
-				if (Physics.SphereCast(crouchRay, m_Capsule.radius * k_Half, crouchRayLength))
+				if (Physics.SphereCast(crouchRay, m_Capsule.radius * k_Half, crouchRayLength, ~0, QueryTriggerInteraction.Ignore))
 				{
 					m_Crouching = true;
 					return;
@@ -116,7 +116,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			{
 				Ray crouchRay = new Ray(m_Rigidbody.position + Vector3.up * m_Capsule.radius * k_Half, Vector3.up);
 				float crouchRayLength = m_CapsuleHeight - m_Capsule.radius * k_Half;
-				if (Physics.SphereCast(crouchRay, m_Capsule.radius * k_Half, crouchRayLength))
+				if (Physics.SphereCast(crouchRay, m_Capsule.radius * k_Half, crouchRayLength, ~0, QueryTriggerInteraction.Ignore))
 				{
 					m_Crouching = true;
 				}
@@ -221,13 +221,13 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			{
 				m_GroundNormal = hitInfo.normal;
 				m_IsGrounded = true;
-				//				m_Animator.applyRootMotion = true;
+				//m_Animator.applyRootMotion = true;
 			}
 			else
 			{
 				m_IsGrounded = false;
 				m_GroundNormal = Vector3.up;
-				m_Animator.applyRootMotion = false;
+				//m_Animator.applyRootMotion = false;
 			}
 		}
 	}

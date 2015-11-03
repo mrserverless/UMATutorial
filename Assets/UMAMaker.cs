@@ -89,7 +89,9 @@ public class UMAMaker : MonoBehaviour {
 		
 		SlotData torso = slotLibrary.InstantiateSlot("MaleTorso", new List<OverlayData> {
 			overlayLibrary.InstantiateOverlay("MaleBody02"),
-			overlayLibrary.InstantiateOverlay("MaleUnderwear01")
+			overlayLibrary.InstantiateOverlay("MaleUnderwear01"),
+			overlayLibrary.InstantiateOverlay("SA_Tee")
+			//overlayLibrary.InstantiateOverlay("SA_Logo")
 		});
 		recipe.slotDataList[3] = torso;
 		
