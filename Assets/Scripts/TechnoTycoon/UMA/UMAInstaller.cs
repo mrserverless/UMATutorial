@@ -7,19 +7,19 @@ namespace TechnoTycoon.UMA {
 		
 	public class UMAInstaller : MonoInstaller {
 		
-		public GameObject UMA;
-		//public UMAGeneratorBase generator;
+		//public GameObject UMA;
+		 //GameObject generator;
 		//public SlotLibrary slotLibrary;
 		//public OverlayLibrary overlayLibrary;
 		//public RaceLibrary raceLibrary;
 		//public RuntimeAnimatorController animController;
 		
 		public override void InstallBindings() {
-			Container.Bind<OverlayLibrary>().ToSinglePrefab(UMA);
-			Container.Bind<SlotLibrary>().ToSinglePrefab(UMA);
-			Container.Bind<OverlayLibrary>().ToSinglePrefab(UMA);
-			Container.Bind<RaceLibrary>().ToSinglePrefab(UMA);
-			Container.Bind<RuntimeAnimatorController>().ToSinglePrefab(UMA);
+			Container.Bind<UMAGenerator>().ToSinglePrefabResource("UMA/UMAGenerator");
+			Container.Bind<SlotLibrary>().ToSinglePrefabResource("UMA/SlotLibrary");
+			Container.Bind<OverlayLibrary>().ToSinglePrefabResource("UMA/OverlayLibrary");
+			Container.Bind<RaceLibrary>().ToSinglePrefabResource("UMA/RaceLibrary");
+			Container.Bind<UMAContext>().ToSinglePrefabResource("UMA/InjectableUMAContext");
 		}
 		
 	}

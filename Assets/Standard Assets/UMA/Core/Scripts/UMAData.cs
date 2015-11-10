@@ -120,8 +120,9 @@ namespace UMA
 			
 			if(!umaGenerator){
 				var generatorGO = GameObject.Find("UMAGenerator");
-				if (generatorGO == null) return;
-				umaGenerator = generatorGO.GetComponent<UMAGeneratorBase>();
+				if (generatorGO != null) {
+					umaGenerator = generatorGO.GetComponent<UMAGeneratorBase> ();
+				}
 			}
 			
 			if (umaRecipe == null)

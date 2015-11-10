@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UMA;
+using Zenject;
 
 public class UMAMaker : MonoBehaviour {
 	
-	public UMAGeneratorBase generator;
-	public SlotLibrary slotLibrary;
-	public OverlayLibrary overlayLibrary;
-	public RaceLibrary raceLibrary;
+	private UMAGenerator generator;
+	private UMAContext context;
 	public RuntimeAnimatorController animController;
-	
+
+	private SlotLibrary slotLibrary;
+	private OverlayLibrary overlayLibrary;
+	private RaceLibrary raceLibrary;
+
 	private UMADynamicAvatar umaDynamicAvatar; // needed to display uma character
-	private UMAData umaData; // used by dynamic avatar
+	private UMAData umaData;
 	private UMADnaHumanoid umaDna; 
 	private UMADnaTutorial umaTutorialDna; // optional make your own dna
 	
@@ -19,6 +22,18 @@ public class UMAMaker : MonoBehaviour {
 	public float bodyMass = 0.5f;
 	
 	private int numberOfSlots = 20; // slots to be added to UMA
+	
+	[PostInject]
+	public void Init(UMAGenerator generator, UMAContext context) {
+		this.generator = generator;
+		this.context = context;
+		this.slotLibrary = (SlotLibrary) context.slotLibrary;
+		this.overlayLibrary = (OverlayLibrary) context.overlayLibrary;
+		this.raceLibrary = (RaceLibrary) context.raceLibrary;
+		
+		umaDna = new UMADnaHumanoid();
+		umaTutorialDna = new UMADnaTutorial();
+	}
 	
 	void Start() {
 		GenerateUMA();	
@@ -38,22 +53,19 @@ public class UMAMaker : MonoBehaviour {
 		
 		GameObject go = new GameObject("MyUMA");
 		umaDynamicAvatar = go.AddComponent<UMADynamicAvatar>();
-		
-		// initialize avatar and grab reference to data
-		umaDynamicAvatar.Initialize();
-		umaData = umaDynamicAvatar.umaData;
-		
-		// assign generator
+		umaDynamicAvatar.context = context;
 		umaDynamicAvatar.umaGenerator = generator;
-		umaData.umaGenerator = generator;
-		
-		// setup slot array
-		umaData.umaRecipe.slotDataList = new SlotData[numberOfSlots];
-		
-		umaDna = new UMADnaHumanoid();
-		umaTutorialDna = new UMADnaTutorial();
-		umaData.umaRecipe.AddDna(umaDna);
-		umaData.umaRecipe.AddDna(umaTutorialDna);
+
+		umaData = go.AddComponent<InjectableUMAData> ();
+		umaDynamicAvatar.umaData = umaData;
+
+		umaDynamicAvatar.Initialize();
+
+		UMAData.UMARecipe recipe = new UMAData.UMARecipe(); 
+		recipe.slotDataList = new SlotData[numberOfSlots];
+		recipe.AddDna(umaDna);
+		recipe.AddDna(umaTutorialDna);
+		umaData.umaRecipe = recipe;
 		
 		CreateMale();
 		
