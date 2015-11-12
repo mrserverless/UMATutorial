@@ -39,11 +39,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e45164b3a409446c682cdca31be4c024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  umaContext: {fileID: 0}
-  generator: {fileID: 0}
-  slotLibrary: {fileID: 0}
-  overlayLibrary: {fileID: 0}
-  raceLibrary: {fileID: 0}
+  umaGenerator: {fileID: 151802, guid: cde5e466579b04b4397454fff6876b1e, type: 2}
+  umaContext: {fileID: 190080, guid: 99f79f43ab0d547e9902b41ed45cce63, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -55,6 +52,14 @@ Prefab:
       propertyPath: UMA
       value: 
       objectReference: {fileID: 120344, guid: 96d44ef58674544138c021b8375b7414, type: 2}
+    - target: {fileID: 0}
+      propertyPath: umaGenerator
+      value: 
+      objectReference: {fileID: 151802, guid: cde5e466579b04b4397454fff6876b1e, type: 2}
+    - target: {fileID: 0}
+      propertyPath: umaContext
+      value: 
+      objectReference: {fileID: 190080, guid: 99f79f43ab0d547e9902b41ed45cce63, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 174244}
