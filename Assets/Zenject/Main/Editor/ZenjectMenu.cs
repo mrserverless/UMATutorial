@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -38,20 +38,27 @@ namespace Zenject
         // Note that you can also use ZenEditorUtil.ValidateAllActiveScenes if you want the errors back
         [MenuItem("Edit/Zenject/Validate All Active Scenes")]
         public static bool ValidateAllActiveScenes()
-        {
-            var startScene = EditorApplication.currentScene;
-
+	    {
+#if UNITY_5_3
+		    var startScene = EditorSceneManager.GetActiveScene().path;
+#else
+			var startScene = EditorApplication.currentScene;
+#endif
             var activeScenes = UnityEditor.EditorBuildSettings.scenes.Where(x => x.enabled)
                 .Select(x => new { Name = Path.GetFileNameWithoutExtension(x.path), Path = x.path }).ToList();
 
-            var failedScenes = new List<string>();
-
+	        var failedScenes = new List<string>();
+	        
             foreach (var sceneInfo in activeScenes)
             {
                 Log.Trace("Validating scene '{0}'...", sceneInfo.Name);
-
-                EditorApplication.OpenScene(sceneInfo.Path);
-
+	            
+#if UNITY_5_3
+	            EditorSceneManager.OpenScene(sceneInfo.Path, false);
+#else
+	            EditorApplication.OpenScene(sceneInfo.Path);
+#endif
+	            
                 var compRoot = GameObject.FindObjectsOfType<SceneCompositionRoot>().OnlyOrDefault();
 
                 // Do not validate if there is no comp root
@@ -64,9 +71,13 @@ namespace Zenject
                     }
                 }
             }
-
-            EditorApplication.OpenScene(startScene);
-
+		    
+#if UNITY_5_3
+		    EditorSceneManager.OpenScene(startScene, false);
+#else
+	    	EditorApplication.OpenScene(startScene);
+#endif
+	        
             if (failedScenes.IsEmpty())
             {
                 Log.Trace("Successfully validated all {0} scenes", activeScenes.Count);
@@ -113,7 +124,11 @@ namespace Zenject
             // Use finally to ensure we clean up the data added from EditorApplication.OpenSceneAdditive
             try
             {
-                EditorApplication.OpenSceneAdditive(scenePath);
+#if UNITY_5_3
+	            EditorSceneManager.OpenScene(scenePath, true);
+#else
+				EditorApplication.OpenSceneAdditive(scenePath);
+#endif
 
                 compRoot = GameObject.FindObjectsOfType<SceneCompositionRoot>().OnlyOrDefault();
 

@@ -1,4 +1,4 @@
-#if !ZEN_NOT_UNITY3D
+﻿#if !ZEN_NOT_UNITY3D
 
 using System;
 using System.Collections.Generic;
@@ -52,7 +52,12 @@ namespace Zenject
             foreach (var sceneInfo in activeScenes)
             {
                 Log.Trace("Validating Scene '{0}'", sceneInfo.Path);
-                EditorApplication.OpenScene(sceneInfo.Path);
+#if UNITY_5_3
+	            EditorSceneManager.OpenScene(sceneInfo.Path, false);
+#else
+				EditorApplication.OpenScene(sceneInfo.Path);
+#endif
+	            
 
                 var sceneErrors = ValidateCurrentScene().Take(maxErrors - errors.Count).ToList();
 

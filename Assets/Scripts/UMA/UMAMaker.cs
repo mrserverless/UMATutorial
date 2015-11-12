@@ -5,13 +5,13 @@ using Zenject;
 
 public class UMAMaker : MonoBehaviour {
 	
-	private UMAGenerator generator;
+	private UMAGeneratorBase generator;
 	private UMAContext context;
 	public RuntimeAnimatorController animController;
 
-	private SlotLibrary slotLibrary;
-	private OverlayLibrary overlayLibrary;
-	private RaceLibrary raceLibrary;
+	private SlotLibraryBase slotLibrary;
+	private OverlayLibraryBase overlayLibrary;
+	private RaceLibraryBase raceLibrary;
 
 	private UMADynamicAvatar umaDynamicAvatar; // needed to display uma character
 	private UMAData umaData;
@@ -24,12 +24,12 @@ public class UMAMaker : MonoBehaviour {
 	private int numberOfSlots = 20; // slots to be added to UMA
 	
 	[PostInject]
-	public void Init(UMAGenerator generator, UMAContext context) {
+	public void Init(UMAGeneratorBase generator, UMAContext context) {
 		this.generator = generator;
 		this.context = context;
-		this.slotLibrary = (SlotLibrary) context.slotLibrary;
-		this.overlayLibrary = (OverlayLibrary) context.overlayLibrary;
-		this.raceLibrary = (RaceLibrary) context.raceLibrary;
+		this.slotLibrary = context.slotLibrary;
+		this.overlayLibrary = context.overlayLibrary;
+		this.raceLibrary = context.raceLibrary;
 		
 		umaDna = new UMADnaHumanoid();
 		umaTutorialDna = new UMADnaTutorial();

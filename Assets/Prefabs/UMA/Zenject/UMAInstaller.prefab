@@ -39,7 +39,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e45164b3a409446c682cdca31be4c024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UMA: {fileID: 120344, guid: 96d44ef58674544138c021b8375b7414, type: 2}
+  umaContext: {fileID: 0}
+  generator: {fileID: 0}
+  slotLibrary: {fileID: 0}
+  overlayLibrary: {fileID: 0}
+  raceLibrary: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

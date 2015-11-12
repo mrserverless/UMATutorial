@@ -172,6 +172,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e45164b3a409446c682cdca31be4c024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  umaContext: {fileID: 0}
+  generator: {fileID: 0}
+  slotLibrary: {fileID: 11408986, guid: e00453a8c90144ddc91889dcb614a9f6, type: 2}
+  overlayLibrary: {fileID: 11476660, guid: 750dfec15277542239c47503c39300b3, type: 2}
+  raceLibrary: {fileID: 11440834, guid: 13e7d98d3c9a648aab23ab9f82d8d1ee, type: 2}
 --- !u!1 &156631880
 GameObject:
   m_ObjectHideFlags: 0
