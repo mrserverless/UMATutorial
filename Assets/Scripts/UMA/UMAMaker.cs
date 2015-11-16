@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UMA;
+using UMA.Inject;
 using Zenject;
 
 public class UMAMaker : MonoBehaviour {
@@ -13,10 +14,11 @@ public class UMAMaker : MonoBehaviour {
 	private OverlayLibraryBase overlayLibrary;
 	private RaceLibraryBase raceLibrary;
 
-	private UMADynamicAvatar umaDynamicAvatar; // needed to display uma character
+	private UMAAvatarBase umaDynamicAvatar; // needed to display uma character
 	private UMAData umaData;
 	private UMADnaHumanoid umaDna; 
 	private UMADnaTutorial umaTutorialDna; // optional make your own dna
+	private UMAInjectableAvatar.Factory avatarGOFactory;
 	
 	[Range (0.0f,1.0f)]
 	public float bodyMass = 0.5f;
@@ -24,15 +26,18 @@ public class UMAMaker : MonoBehaviour {
 	private int numberOfSlots = 20; // slots to be added to UMA
 	
 	[PostInject]
-	public void Init(UMAGeneratorBase generator, UMAContext context) {
+	public void Init(UMAGeneratorBase generator, UMAContext context, 
+		UMADnaHumanoid dna, UMADnaTutorial tutorial,
+		UMAInjectableAvatar.Factory avatarGOFactory) {
 		this.generator = generator;
 		this.context = context;
 		this.slotLibrary = context.slotLibrary;
 		this.overlayLibrary = context.overlayLibrary;
 		this.raceLibrary = context.raceLibrary;
-		
-		umaDna = new UMADnaHumanoid();
-		umaTutorialDna = new UMADnaTutorial();
+		this.avatarGOFactory = avatarGOFactory;
+			
+		umaDna = dna;
+		umaTutorialDna = tutorial;
 	}
 	
 	void Start() {
@@ -56,11 +61,13 @@ public class UMAMaker : MonoBehaviour {
 		umaDynamicAvatar.context = context;
 		umaDynamicAvatar.umaGenerator = generator;
 
-		umaData = go.AddComponent<InjectableUMAData> ();
+		umaData = go.AddComponent<UMAInjectableData> ();
 		umaDynamicAvatar.umaData = umaData;
 
 		umaDynamicAvatar.Initialize();
-
+		//umaDynamicAvatar = avatarGOFactory.Create();
+		//GameObject go = umaDynamicAvatar.gameObject;
+		
 		UMAData.UMARecipe recipe = new UMAData.UMARecipe(); 
 		recipe.slotDataList = new SlotData[numberOfSlots];
 		recipe.AddDna(umaDna);
@@ -82,7 +89,7 @@ public class UMAMaker : MonoBehaviour {
 	void CreateMale() {
 		// grab reference to receipe
 		var recipe = umaDynamicAvatar.umaData.umaRecipe;
-		
+
 		recipe.SetRace(raceLibrary.GetRace("HumanMale"));
 		
 		SlotData eyes = slotLibrary.InstantiateSlot("MaleEyes");
