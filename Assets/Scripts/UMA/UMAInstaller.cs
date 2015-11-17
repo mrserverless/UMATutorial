@@ -13,6 +13,7 @@ namespace UMA.Zenject
 		public GameObject umaContext;
 		public GameObject umaAvatar;
 		public GameObject umaData;
+		public GameObject umaAnimator;
 		
 		public override void InstallBindings() 
 		{

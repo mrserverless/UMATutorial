@@ -41,6 +41,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   umaGenerator: {fileID: 151802, guid: cde5e466579b04b4397454fff6876b1e, type: 2}
   umaContext: {fileID: 190080, guid: 99f79f43ab0d547e9902b41ed45cce63, type: 2}
+  umaAvatar: {fileID: 115822, guid: d76ce8baadb7e4441a6387ee2d588268, type: 2}
+  umaData: {fileID: 174022, guid: 963aebe5581234c3eba2ddd2ffbf2a20, type: 2}
+  umaAnimator: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

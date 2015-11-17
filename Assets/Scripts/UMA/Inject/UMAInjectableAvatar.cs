@@ -7,7 +7,6 @@ namespace UMA.Inject
 {
 	public class UMAInjectableAvatar : UMAAvatarBase {
 		
-		public bool loadOnStart;
 		public override void Start()
 		{
 			// do nothing until dependencies are injected
@@ -23,7 +22,7 @@ namespace UMA.Inject
 			base.umaData = data;
 			base.umaRecipe = recipe;
 			base.umaAdditionalRecipes = additionalRecipe;
-			
+		
 			base.Initialize();
 			
 			if (umaAdditionalRecipes == null || umaAdditionalRecipes.Length == 0)

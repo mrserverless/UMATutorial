@@ -4,7 +4,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 {
 	[RequireComponent(typeof(Rigidbody))]
 	[RequireComponent(typeof(CapsuleCollider))]
-	[RequireComponent(typeof(Animator))]
 	public class ThirdPersonCharacter : MonoBehaviour
 	{
 		[SerializeField] float m_MovingTurnSpeed = 360;
@@ -17,7 +16,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
 
 		Rigidbody m_Rigidbody;
-		Animator m_Animator;
+		protected Animator m_Animator;
 		bool m_IsGrounded;
 		float m_OrigGroundCheckDistance;
 		const float k_Half = 0.5f;
@@ -28,11 +27,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		Vector3 m_CapsuleCenter;
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
-		Animator umaAnimator;
+		//Animator umaAnimator;
 
 		void Start()
 		{
-			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
 			m_Capsule = GetComponent<CapsuleCollider>();
 			m_CapsuleHeight = m_Capsule.height;
@@ -40,17 +38,17 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
+			
+			m_Animator = null;
 		}
 
 		void Update() {
-			if (umaAnimator == null && transform.Find("MyUMA").GetComponent<Animator>()) {
-				umaAnimator = transform.Find("MyUMA").GetComponent<Animator>();
+			if (m_Animator == null && transform.Find("MyUMA").GetComponent<Animator>()) {
+				m_Animator = transform.Find("MyUMA").GetComponent<Animator>();
 				Debug.Log("animator found");
-				m_Animator = umaAnimator;
 				m_Animator.applyRootMotion = false;
 			}
 		}
-		
 		
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{

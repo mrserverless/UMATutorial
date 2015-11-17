@@ -26,7 +26,7 @@ public class UMAMaker : MonoBehaviour {
 	private int numberOfSlots = 20; // slots to be added to UMA
 	
 	[PostInject]
-	public void Init(UMAGeneratorBase generator, UMAContext context, 
+	public void Inject(UMAGeneratorBase generator, UMAContext context, 
 		UMADnaHumanoid dna, UMADnaTutorial tutorial,
 		UMAInjectableAvatar.Factory avatarGOFactory) {
 		this.generator = generator;
@@ -56,27 +56,21 @@ public class UMAMaker : MonoBehaviour {
 	
 	void GenerateUMA () {
 		
-		GameObject go = new GameObject("MyUMA");
-		umaDynamicAvatar = go.AddComponent<UMADynamicAvatar>();
-		umaDynamicAvatar.context = context;
-		umaDynamicAvatar.umaGenerator = generator;
-
+		umaDynamicAvatar = avatarGOFactory.Create();
+		GameObject go = umaDynamicAvatar.gameObject;
+		go.name = "MyUMA";
+		UMAData.UMARecipe recipe = new UMAData.UMARecipe(); 
+		
 		umaData = go.AddComponent<UMAInjectableData> ();
 		umaDynamicAvatar.umaData = umaData;
-
-		umaDynamicAvatar.Initialize();
-		//umaDynamicAvatar = avatarGOFactory.Create();
-		//GameObject go = umaDynamicAvatar.gameObject;
 		
-		UMAData.UMARecipe recipe = new UMAData.UMARecipe(); 
 		recipe.slotDataList = new SlotData[numberOfSlots];
 		recipe.AddDna(umaDna);
 		recipe.AddDna(umaTutorialDna);
+		
 		umaData.umaRecipe = recipe;
 		
 		CreateMale();
-		
-		umaDynamicAvatar.animationController = animController;
 		
 		// Generate UMA
 		umaDynamicAvatar.UpdateNewRace();
