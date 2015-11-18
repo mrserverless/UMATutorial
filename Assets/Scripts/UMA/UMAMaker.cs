@@ -5,9 +5,6 @@ using UMA.Inject;
 using Zenject;
 
 public class UMAMaker : MonoBehaviour {
-	
-	private UMAGeneratorBase generator;
-	private UMAContext context;
 
 	private SlotLibraryBase slotLibrary;
 	private OverlayLibraryBase overlayLibrary;
@@ -18,25 +15,23 @@ public class UMAMaker : MonoBehaviour {
 	private UMADnaHumanoid umaDna; 
 	private UMADnaTutorial umaTutorialDna; // optional make your own dna
 	private UMAInjectableAvatar.Factory avatarGOFactory;
-	
+		
 	[Range (0.0f,1.0f)]
 	public float bodyMass = 0.5f;
 	
 	private int numberOfSlots = 20; // slots to be added to UMA
 	
+	public bool vestState = false;
+	private bool lastVestState = false;
+	public Color vestColor;
+	private Color lastVestColor;
+	
 	[PostInject]
-	public void Inject(UMAGeneratorBase generator, UMAContext context, 
-		UMADnaHumanoid dna, UMADnaTutorial tutorial,
-		UMAInjectableAvatar.Factory avatarGOFactory) {
-		this.generator = generator;
-		this.context = context;
-		this.slotLibrary = context.slotLibrary;
-		this.overlayLibrary = context.overlayLibrary;
-		this.raceLibrary = context.raceLibrary;
+	public void Inject(UMAInjectableAvatar.Factory avatarGOFactory,
+		UMADnaHumanoid dna, UMADnaTutorial tutorial) {
 		this.avatarGOFactory = avatarGOFactory;
-			
-		umaDna = dna;
-		umaTutorialDna = tutorial;
+		this.umaDna = dna;
+		this.umaTutorialDna = tutorial;
 	}
 	
 	void Start() {
@@ -44,13 +39,35 @@ public class UMAMaker : MonoBehaviour {
 	}
 	
 	void Update() {
-		
 		if (bodyMass != umaDna.upperMuscle) {
 			SetBodyMass(bodyMass);
 			umaData.isShapeDirty = true;
 			umaData.Dirty();
 		}
-			
+		if (vestState && !lastVestState)
+		{
+			lastVestState = true;
+			AddOverlay(3, "SA_Tee", Color.white);
+			AddOverlay(3, "SA_Logo", Color.white);
+			umaData.isTextureDirty = true;
+			umaData.Dirty();
+		}
+		if (!vestState && lastVestState)
+		{
+			lastVestState = false;
+			RemoveOverlay(3, "SA_Tee");
+			RemoveOverlay(3, "SA_Logo");
+			umaData.isTextureDirty = true;
+			umaData.Dirty();
+		}
+		if (vestColor != lastVestColor && vestState)
+		{
+			lastVestColor = vestColor;
+			AddOverlay(3, "SA_Tee", vestColor);
+			AddOverlay(3, "SA_Logo", vestColor);
+			umaData.isTextureDirty = true;
+			umaData.Dirty();
+		}
 	}
 	
 	void GenerateUMA () {
@@ -59,6 +76,10 @@ public class UMAMaker : MonoBehaviour {
 		GameObject player = umaDynamicAvatar.gameObject;
 		player.name = "MyUMA";
 		UMAData.UMARecipe recipe = new UMAData.UMARecipe(); 
+		
+		this.slotLibrary = umaDynamicAvatar.context.slotLibrary;
+		this.overlayLibrary = umaDynamicAvatar.context.overlayLibrary;
+		this.raceLibrary = umaDynamicAvatar.context.raceLibrary;
 		
 		umaData = player.AddComponent<UMAInjectableData> ();
 		umaDynamicAvatar.umaData = umaData;
@@ -93,7 +114,6 @@ public class UMAMaker : MonoBehaviour {
 		mouth.AddOverlay(overlayLibrary.InstantiateOverlay("InnerMouth"));
 		recipe.slotDataList[1] = mouth;
 		
-
 		recipe.slotDataList[2] = slotLibrary.InstantiateSlot("MaleFace", new List<OverlayData> {
 			overlayLibrary.InstantiateOverlay("MaleHead02"),
 			overlayLibrary.InstantiateOverlay("MaleEyebrow01", Color.black)
@@ -101,9 +121,7 @@ public class UMAMaker : MonoBehaviour {
 		
 		SlotData torso = slotLibrary.InstantiateSlot("MaleTorso", new List<OverlayData> {
 			overlayLibrary.InstantiateOverlay("MaleBody02"),
-			overlayLibrary.InstantiateOverlay("MaleUnderwear01"),
-			overlayLibrary.InstantiateOverlay("SA_Tee"),
-			overlayLibrary.InstantiateOverlay("SA_Logo")
+			overlayLibrary.InstantiateOverlay("MaleUnderwear01")
 		});
 		recipe.slotDataList[3] = torso;
 		
@@ -125,4 +143,18 @@ public class UMAMaker : MonoBehaviour {
 		
 		return new SlotData[0];
 	}
+	
+	void AddOverlay (int slot, string overLayName, Color color)
+	{
+		if (color == null) color = Color.white;
+		umaDynamicAvatar.umaData.umaRecipe.slotDataList[slot]
+			.AddOverlay(overlayLibrary.InstantiateOverlay(overLayName, color));
+	}
+	
+	void RemoveOverlay (int slot, string overLayName)
+	{
+		umaDynamicAvatar.umaData.umaRecipe.slotDataList[slot]
+			.RemoveOverlay(overLayName);
+	}
+	
 }

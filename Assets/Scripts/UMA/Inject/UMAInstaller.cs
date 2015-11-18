@@ -38,7 +38,6 @@ namespace UMA.Zenject
 		
 		void InstallUMADna() 
 		{
-
 			Container.Bind<UMADnaHumanoid>().ToSingle();
 			Container.Bind<UMADnaTutorial>().ToSingle();
 		}
