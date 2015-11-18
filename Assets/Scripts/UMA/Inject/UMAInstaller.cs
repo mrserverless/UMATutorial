@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using UMA;
 using UMA.Inject;
+using UnityStandardAssets.Characters.ThirdPerson;
 using Zenject;
 
 namespace UMA.Zenject 
@@ -13,7 +14,7 @@ namespace UMA.Zenject
 		public GameObject umaContext;
 		public GameObject umaAvatar;
 		public GameObject umaData;
-		public GameObject umaAnimator;
+		public GameObject umaController;
 		
 		public override void InstallBindings() 
 		{
@@ -27,6 +28,7 @@ namespace UMA.Zenject
 			Container.Bind<UMAGeneratorBase>().ToSinglePrefab<UMAGeneratorBase>(umaGenerator);
 			Container.Bind<UMAContext>().ToSinglePrefab<UMAContext>(umaContext);
 			Container.Bind<UMAInjectableData>().ToTransientPrefab<UMAInjectableData>(umaData);
+			Container.Bind<ThirdPersonCharacter>().ToSinglePrefab<ThirdPersonCharacter>(umaController);
 		}
 		
 		void InstallAvartar() 

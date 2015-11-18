@@ -16,7 +16,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
 
 		Rigidbody m_Rigidbody;
-		protected Animator m_Animator;
+		public Animator m_Animator;
 		bool m_IsGrounded;
 		float m_OrigGroundCheckDistance;
 		const float k_Half = 0.5f;
@@ -27,8 +27,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		Vector3 m_CapsuleCenter;
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
-		//Animator umaAnimator;
-
+		bool umaAnimator = false;
+		
 		void Start()
 		{
 			m_Rigidbody = GetComponent<Rigidbody>();
@@ -38,15 +38,14 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
-			
-			m_Animator = null;
 		}
 
 		void Update() {
-			if (m_Animator == null && transform.Find("MyUMA").GetComponent<Animator>()) {
+			if (!umaAnimator && transform.Find("MyUMA").GetComponent<Animator>()) {
 				m_Animator = transform.Find("MyUMA").GetComponent<Animator>();
 				Debug.Log("animator found");
 				m_Animator.applyRootMotion = false;
+				umaAnimator = true;
 			}
 		}
 		

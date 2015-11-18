@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UMA;
+using UnityStandardAssets.Characters.ThirdPerson;
 using Zenject;
 
 namespace UMA.Inject
@@ -15,14 +16,22 @@ namespace UMA.Inject
 		[PostInject]
 		public void Initialize(
 			UMAContext context, UMAGeneratorBase generator, UMAInjectableData data, 
-			[InjectOptional]UMARecipeBase recipe, [InjectOptional]UMARecipeBase [] additionalRecipe)
+			[InjectOptional]UMARecipeBase recipe, 
+			[InjectOptional]UMARecipeBase [] additionalRecipe)
 		{
 			base.context = context;
 			base.umaGenerator = generator;
 			base.umaData = data;
 			base.umaRecipe = recipe;
 			base.umaAdditionalRecipes = additionalRecipe;
-		
+			
+			//controller.gameObject.transform.SetParent(this.gameObject.transform);
+			//controller.gameObject.transform.localPosition = Vector3.zero;
+			//controller.gameObject.transform.localRotation = Quaternion.identity;
+			
+			//Animator animator = this.gameObject.GetComponent<Animator>();
+			//controller.m_Animator = animator;
+			
 			base.Initialize();
 			
 			if (umaAdditionalRecipes == null || umaAdditionalRecipes.Length == 0)

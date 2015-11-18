@@ -8,7 +8,6 @@ public class UMAMaker : MonoBehaviour {
 	
 	private UMAGeneratorBase generator;
 	private UMAContext context;
-	public RuntimeAnimatorController animController;
 
 	private SlotLibraryBase slotLibrary;
 	private OverlayLibraryBase overlayLibrary;
@@ -57,11 +56,11 @@ public class UMAMaker : MonoBehaviour {
 	void GenerateUMA () {
 		
 		umaDynamicAvatar = avatarGOFactory.Create();
-		GameObject go = umaDynamicAvatar.gameObject;
-		go.name = "MyUMA";
+		GameObject player = umaDynamicAvatar.gameObject;
+		player.name = "MyUMA";
 		UMAData.UMARecipe recipe = new UMAData.UMARecipe(); 
 		
-		umaData = go.AddComponent<UMAInjectableData> ();
+		umaData = player.AddComponent<UMAInjectableData> ();
 		umaDynamicAvatar.umaData = umaData;
 		
 		recipe.slotDataList = new SlotData[numberOfSlots];
@@ -75,9 +74,9 @@ public class UMAMaker : MonoBehaviour {
 		// Generate UMA
 		umaDynamicAvatar.UpdateNewRace();
 		
-		go.transform.SetParent(this.gameObject.transform);
-		go.transform.localPosition = Vector3.zero;
-		go.transform.localRotation = Quaternion.identity;
+		player.transform.SetParent(this.gameObject.transform);
+		player.transform.localPosition = Vector3.zero;
+		player.transform.localRotation = Quaternion.identity;
 	}
 	
 	void CreateMale() {
