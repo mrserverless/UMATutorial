@@ -21,6 +21,7 @@ namespace UMA.Zenject
 			InstallPrefabs();
 			InstallAvartar();
 			InstallUMADna();
+			Container.Bind<ITickable>().ToSingle<UMAMaker>();
 		}
 		
 		void InstallPrefabs() 

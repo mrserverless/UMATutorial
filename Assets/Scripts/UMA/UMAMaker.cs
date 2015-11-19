@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UMA;
 using UMA.Inject;
+using UnityStandardAssets.Characters.ThirdPerson;
 using Zenject;
 
-public class UMAMaker : MonoBehaviour {
+public class UMAMaker : ITickable {
 
 	private SlotLibraryBase slotLibrary;
 	private OverlayLibraryBase overlayLibrary;
@@ -27,18 +28,15 @@ public class UMAMaker : MonoBehaviour {
 	private Color lastVestColor;
 	
 	[PostInject]
-	public void Inject(UMAInjectableAvatar.Factory avatarGOFactory,
+	public void Initialize(UMAInjectableAvatar.Factory avatarGOFactory,
 		UMADnaHumanoid dna, UMADnaTutorial tutorial) {
 		this.avatarGOFactory = avatarGOFactory;
 		this.umaDna = dna;
 		this.umaTutorialDna = tutorial;
+		GenerateUMA();		
 	}
 	
-	void Start() {
-		GenerateUMA();	
-	}
-	
-	void Update() {
+	public void Tick() {
 		if (bodyMass != umaDna.upperMuscle) {
 			SetBodyMass(bodyMass);
 			umaData.isShapeDirty = true;
@@ -95,7 +93,8 @@ public class UMAMaker : MonoBehaviour {
 		// Generate UMA
 		umaDynamicAvatar.UpdateNewRace();
 		
-		player.transform.SetParent(this.gameObject.transform);
+		GameObject controllerGO = GameObject.FindGameObjectWithTag("Character Controller");
+		player.transform.SetParent(controllerGO.transform);
 		player.transform.localPosition = Vector3.zero;
 		player.transform.localRotation = Quaternion.identity;
 	}
@@ -146,7 +145,6 @@ public class UMAMaker : MonoBehaviour {
 	
 	void AddOverlay (int slot, string overLayName, Color color)
 	{
-		if (color == null) color = Color.white;
 		umaDynamicAvatar.umaData.umaRecipe.slotDataList[slot]
 			.AddOverlay(overlayLibrary.InstantiateOverlay(overLayName, color));
 	}
