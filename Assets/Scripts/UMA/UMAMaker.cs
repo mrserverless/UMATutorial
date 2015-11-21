@@ -93,10 +93,10 @@ public class UMAMaker : ITickable {
 		// Generate UMA
 		umaDynamicAvatar.UpdateNewRace();
 		
-		GameObject controllerGO = GameObject.FindGameObjectWithTag("Character Controller");
-		player.transform.SetParent(controllerGO.transform);
-		player.transform.localPosition = Vector3.zero;
-		player.transform.localRotation = Quaternion.identity;
+		//GameObject controllerGO = GameObject.FindGameObjectWithTag("Character Controller");
+		//player.transform.SetParent(controllerGO.transform);
+		//player.transform.localPosition = Vector3.zero;
+		//player.transform.localRotation = Quaternion.identity;
 	}
 	
 	void CreateMale() {

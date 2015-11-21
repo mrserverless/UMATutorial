@@ -17,7 +17,8 @@ namespace UMA.Inject
 		public void Initialize(
 			UMAContext context, UMAGeneratorBase generator, UMAInjectableData data, 
 			[InjectOptional]UMARecipeBase recipe, 
-			[InjectOptional]UMARecipeBase [] additionalRecipe)
+			[InjectOptional]UMARecipeBase [] additionalRecipe,
+			ThirdPersonCharacter controller)
 		{
 			base.context = context;
 			base.umaGenerator = generator;
@@ -26,11 +27,12 @@ namespace UMA.Inject
 			base.umaAdditionalRecipes = additionalRecipe;
 			
 			//controller.gameObject.transform.SetParent(this.gameObject.transform);
-			//controller.gameObject.transform.localPosition = Vector3.zero;
-			//controller.gameObject.transform.localRotation = Quaternion.identity;
+			this.gameObject.transform.SetParent(controller.gameObject.transform);
+			this.gameObject.transform.localPosition = Vector3.zero;
+			this.gameObject.transform.localRotation = Quaternion.identity;
 			
-			//Animator animator = this.gameObject.GetComponent<Animator>();
-			//controller.m_Animator = animator;
+			Animator animator = this.gameObject.GetComponent<Animator>();
+			controller.m_Animator = animator;
 			
 			base.Initialize();
 			

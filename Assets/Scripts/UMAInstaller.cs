@@ -14,7 +14,7 @@ namespace UMA.Zenject
 		public GameObject umaContext;
 		public GameObject umaAvatar;
 		public GameObject umaData;
-		public GameObject umaController;
+		public GameObject playerController;
 		
 		public override void InstallBindings() 
 		{
@@ -29,7 +29,7 @@ namespace UMA.Zenject
 			Container.Bind<UMAGeneratorBase>().ToSinglePrefab<UMAGeneratorBase>(umaGenerator);
 			Container.Bind<UMAContext>().ToSinglePrefab<UMAContext>(umaContext);
 			Container.Bind<UMAInjectableData>().ToTransientPrefab<UMAInjectableData>(umaData);
-			Container.Bind<ThirdPersonCharacter>().ToSinglePrefab<ThirdPersonCharacter>(umaController);
+			Container.Bind<ThirdPersonCharacter>().ToSinglePrefab<ThirdPersonCharacter>(playerController);
 		}
 		
 		void InstallAvartar() 
