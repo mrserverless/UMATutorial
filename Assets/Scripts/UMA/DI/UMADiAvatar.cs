@@ -4,9 +4,9 @@ using UMA;
 using UnityStandardAssets.Characters.ThirdPerson;
 using Zenject;
 
-namespace UMA.Inject
+namespace UMA.DI
 {
-	public class UMAInjectableAvatar : UMAAvatarBase {
+	public class UMADiAvatar : UMAAvatarBase {
 		
 		public override void Start()
 		{
@@ -15,7 +15,7 @@ namespace UMA.Inject
 		
 		[PostInject]
 		public void Initialize(
-			UMAContext context, UMAGeneratorBase generator, UMAInjectableData data, 
+			UMAContext context, UMAGeneratorBase generator, UMADiData data, 
 			[InjectOptional]UMARecipeBase recipe, 
 			[InjectOptional]UMARecipeBase [] additionalRecipe,
 			ThirdPersonCharacter controller)
@@ -46,7 +46,7 @@ namespace UMA.Inject
 			}
 		}
 		
-		public class Factory : GameObjectFactory<UMAInjectableAvatar>
+		public class Factory : GameObjectFactory<UMADiAvatar>
 		{
 		}
 	}

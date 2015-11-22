@@ -3,9 +3,9 @@ using System.Collections;
 using UMA;
 using Zenject;
 
-namespace UMA.Inject
+namespace UMA.DI
 {
-	public class UMAInjectableData : UMAData {
+	public class UMADiData : UMAData {
 		
 		[PostInject]
 		void init (UMAGeneratorBase generator, [InjectOptional] UMARecipe recipe) {

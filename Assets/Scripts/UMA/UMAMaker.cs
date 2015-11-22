@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UMA;
-using UMA.Inject;
+using UMA.DI;
 using UnityStandardAssets.Characters.ThirdPerson;
 using Zenject;
 
@@ -15,7 +15,7 @@ public class UMAMaker : ITickable {
 	private UMAData umaData;
 	private UMADnaHumanoid umaDna; 
 	private UMADnaTutorial umaTutorialDna; // optional make your own dna
-	private UMAInjectableAvatar.Factory avatarGOFactory;
+	private UMADiAvatar.Factory avatarGOFactory;
 		
 	[Range (0.0f,1.0f)]
 	public float bodyMass = 0.5f;
@@ -28,7 +28,7 @@ public class UMAMaker : ITickable {
 	private Color lastVestColor;
 	
 	[PostInject]
-	public void Initialize(UMAInjectableAvatar.Factory avatarGOFactory,
+	public void Initialize(UMADiAvatar.Factory avatarGOFactory,
 		UMADnaHumanoid dna, UMADnaTutorial tutorial) {
 		this.avatarGOFactory = avatarGOFactory;
 		this.umaDna = dna;
@@ -73,14 +73,16 @@ public class UMAMaker : ITickable {
 		umaDynamicAvatar = avatarGOFactory.Create();
 		GameObject player = umaDynamicAvatar.gameObject;
 		player.name = "MyUMA";
-		UMAData.UMARecipe recipe = new UMAData.UMARecipe(); 
 		
 		this.slotLibrary = umaDynamicAvatar.context.slotLibrary;
 		this.overlayLibrary = umaDynamicAvatar.context.overlayLibrary;
 		this.raceLibrary = umaDynamicAvatar.context.raceLibrary;
 		
-		umaData = player.AddComponent<UMAInjectableData> ();
+		umaData = player.AddComponent<UMADiData> ();
 		umaDynamicAvatar.umaData = umaData;
+		UMAData.UMARecipe recipe = new UMAData.UMARecipe(); 
+		
+		//umaData = umaDynamicAvatar.umaData;
 		
 		recipe.slotDataList = new SlotData[numberOfSlots];
 		recipe.AddDna(umaDna);
