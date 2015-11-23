@@ -23,7 +23,7 @@ namespace UMA.Di
 		{
 			Container.Bind<UMAGeneratorBase>().ToSinglePrefab<UMAGeneratorBase>(umaGenerator);
 			Container.Bind<UMAContext>().ToSinglePrefab<UMAContext>(umaContext);
-			Container.Bind<UMADiData>().ToTransientPrefab<UMADiData>(umaData);
+			Container.Bind<UMAData>().ToTransientPrefab<UMAData>(umaData);
 		}
 		
 		void InstallUMADna() 

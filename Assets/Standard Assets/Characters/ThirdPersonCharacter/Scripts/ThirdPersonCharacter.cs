@@ -40,14 +40,14 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 		}
 
-		void Update() {
-			if (!umaAnimator && transform.Find("MyUMA").GetComponent<Animator>()) {
-				m_Animator = transform.Find("MyUMA").GetComponent<Animator>();
-				Debug.Log("animator found");
-				m_Animator.applyRootMotion = false;
-				umaAnimator = true;
-			}
-		}
+//		void Update() {
+//			if (!umaAnimator && transform.Find("MyUMA").GetComponent<Animator>()) {
+//				m_Animator = transform.Find("MyUMA").GetComponent<Animator>();
+//				Debug.Log("animator found");
+//				m_Animator.applyRootMotion = false;
+//				umaAnimator = true;
+//			}
+//		}
 		
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{

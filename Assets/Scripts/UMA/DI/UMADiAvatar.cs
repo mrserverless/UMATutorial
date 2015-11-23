@@ -7,7 +7,9 @@ using Zenject;
 namespace UMA.DI
 {
 	public class UMADiAvatar : UMAAvatarBase {
-		
+
+		ThirdPersonCharacter controller;
+
 		public override void Start()
 		{
 			// do nothing until dependencies are injected
@@ -15,7 +17,7 @@ namespace UMA.DI
 		
 		[PostInject]
 		public void Initialize(
-			UMAContext context, UMAGeneratorBase generator, UMADiData data, 
+			UMAContext context, UMAGeneratorBase generator, UMAData data, 
 			[InjectOptional]UMARecipeBase recipe, 
 			[InjectOptional]UMARecipeBase [] additionalRecipe,
 			ThirdPersonCharacter controller)
@@ -25,15 +27,12 @@ namespace UMA.DI
 			base.umaData = data;
 			base.umaRecipe = recipe;
 			base.umaAdditionalRecipes = additionalRecipe;
+			this.controller = controller;
 			
-			//controller.gameObject.transform.SetParent(this.gameObject.transform);
 			this.gameObject.transform.SetParent(controller.gameObject.transform);
 			this.gameObject.transform.localPosition = Vector3.zero;
 			this.gameObject.transform.localRotation = Quaternion.identity;
-			
-			Animator animator = this.gameObject.GetComponent<Animator>();
-			controller.m_Animator = animator;
-			
+
 			base.Initialize();
 			
 			if (umaAdditionalRecipes == null || umaAdditionalRecipes.Length == 0)
@@ -45,7 +44,18 @@ namespace UMA.DI
 				Load(umaRecipe, umaAdditionalRecipes);
 			}
 		}
-		
+
+		public void Update()
+		{
+			
+			if (controller.m_Animator == null) { // && transform.Find("MyUMA").GetComponent<Animator>()
+					controller.m_Animator = base.umaData.animator;
+					controller.m_Animator.applyRootMotion = false;
+				}
+
+		}
+
+
 		public class Factory : GameObjectFactory<UMADiAvatar>
 		{
 		}

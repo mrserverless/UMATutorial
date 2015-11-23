@@ -78,33 +78,24 @@ public class UMAMaker : ITickable {
 		this.overlayLibrary = umaDynamicAvatar.context.overlayLibrary;
 		this.raceLibrary = umaDynamicAvatar.context.raceLibrary;
 		
-		umaData = player.AddComponent<UMADiData> ();
+		umaData = player.AddComponent<UMAData> ();
 		umaDynamicAvatar.umaData = umaData;
-		UMAData.UMARecipe recipe = new UMAData.UMARecipe(); 
+		umaData.umaRecipe = CreateMaleRecipe();
 		
-		//umaData = umaDynamicAvatar.umaData;
+		// Generate UMA
+		umaDynamicAvatar.UpdateNewRace();
+
+		Animator animator = player.GetComponent<Animator>();
+//		controller.m_Animator = animator;
+	}
+	
+	UMAData.UMARecipe CreateMaleRecipe() {
 		
+		var recipe = new UMAData.UMARecipe();
 		recipe.slotDataList = new SlotData[numberOfSlots];
 		recipe.AddDna(umaDna);
 		recipe.AddDna(umaTutorialDna);
 		
-		umaData.umaRecipe = recipe;
-		
-		CreateMale();
-		
-		// Generate UMA
-		umaDynamicAvatar.UpdateNewRace();
-		
-		//GameObject controllerGO = GameObject.FindGameObjectWithTag("Character Controller");
-		//player.transform.SetParent(controllerGO.transform);
-		//player.transform.localPosition = Vector3.zero;
-		//player.transform.localRotation = Quaternion.identity;
-	}
-	
-	void CreateMale() {
-		// grab reference to receipe
-		var recipe = umaDynamicAvatar.umaData.umaRecipe;
-
 		recipe.SetRace(raceLibrary.GetRace("HumanMale"));
 		
 		SlotData eyes = slotLibrary.InstantiateSlot("MaleEyes");
@@ -129,6 +120,8 @@ public class UMAMaker : ITickable {
 		recipe.slotDataList[4] = slotLibrary.InstantiateSlot("MaleHands", torso.GetOverlayList());
 		recipe.slotDataList[5] = slotLibrary.InstantiateSlot("MaleLegs", torso.GetOverlayList());		
 		recipe.slotDataList[6] = slotLibrary.InstantiateSlot("MaleFeet", torso.GetOverlayList());
+		
+		return recipe;
 	}
 	
 	private void SetBodyMass(float mass) {
